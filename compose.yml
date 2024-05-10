@@ -1,0 +1,18 @@
+services:
+  account-service:
+    container_name: account-service
+    build:
+      context: ./account-service
+    ports:
+      - 8080:8080
+    depends_on:
+      - account-database
+
+  account-database:
+    container_name: account-database
+    image: postgres:latest
+    environment:
+      - DB_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432

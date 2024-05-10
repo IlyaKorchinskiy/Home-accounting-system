@@ -2,7 +2,7 @@ spring:
   jpa:
     open-in-view: false
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=account&stringtype=unspecified
+    url: jdbc:postgresql://account-database:5432/postgres?currentSchema=account&stringtype=unspecified
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
