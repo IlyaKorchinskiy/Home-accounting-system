@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class Debit extends BaseEntity<UUID> {
+public class Income extends BaseEntity<UUID> {
 
     private LocalDate date;
     private BigDecimal amount;
-    private UUID debitCategoryId;
+    private UUID incomeCategoryId;
 
 }
