@@ -4,6 +4,7 @@ import com.home.accounting.system.account.application.annotation.UseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
@@ -13,10 +14,11 @@ public class TransactionalUseCaseAspect {
 
     private final TransactionalUseCaseExecutor transactionalUseCaseExecutor;
 
-    @Pointcut(value = "within(useCase)", argNames = "useCase")
-    void inUseCase(UseCase useCase) {}
+    @Pointcut("@annotation(useCase)")
+    public void callAt(UseCase useCase) {}
 
-    Object useCase(ProceedingJoinPoint proceedingJoinPoint, UseCase useCase) {
+    @Around(value = "callAt(useCase)", argNames = "proceedingJoinPoint,useCase")
+    public Object around(ProceedingJoinPoint proceedingJoinPoint, UseCase useCase) {
         if (useCase.readOnly()) {
             return transactionalUseCaseExecutor.executeInReadTransaction(() -> proceed(proceedingJoinPoint));
         } else {
@@ -25,7 +27,7 @@ public class TransactionalUseCaseAspect {
     }
 
     @SneakyThrows
-    Object proceed(ProceedingJoinPoint proceedingJoinPoint) {
+    private Object proceed(ProceedingJoinPoint proceedingJoinPoint) {
         return proceedingJoinPoint.proceed();
     }
 }
